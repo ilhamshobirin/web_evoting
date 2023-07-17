@@ -23,6 +23,11 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert([
+            ['name' => 'Admin Utama', 'user_name' => 'admin', 'password' => '$2y$10$BffN3/ssZNYDlKx3Y6E8XOHrZWHEDKOGKuH4424fOB77LmtVPuLg.', 
+                'ktp' => '36740420001', 'user_level' => '10',]
+        ]);
     }
 
     /**

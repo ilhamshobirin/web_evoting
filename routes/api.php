@@ -22,6 +22,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //candidates
     Route::apiResource('candidates', App\Http\Controllers\Api\CandidateController::class);
+
+    //candidates
+    Route::apiResource('votings', App\Http\Controllers\Api\VotingController::class);
+    Route::delete('votings/delete/all', [App\Http\Controllers\Api\VotingController::class, 'clear']);
 });
 
 

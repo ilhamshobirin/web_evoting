@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Candidate;
 
 //import Resources
-use App\Http\Resources\CandidateResource;
+use App\Http\Resources\ResponseResource;
 
 //import Facade "Validator"
 use Illuminate\Support\Facades\Validator;
@@ -26,12 +26,12 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        //get all posts
+        //get all candidates
         // $candidates = Candidate::all();
-        $candidates = Candidate::latest()->paginate(5);
+        $candidates = Candidate::all();
 
         //return collection of candidates as a resource
-        return new CandidateResource(true, 'List Data Kandidat', $candidates);
+        return new ResponseResource(true, 'List Data Kandidat', $candidates);
     }
 
     /**
@@ -66,7 +66,7 @@ class CandidateController extends Controller
         ]);
 
         //return response
-        return new CandidateResource(true, 'Data Kandidat Berhasil Ditambahkan!', $candidate);
+        return new ResponseResource(true, 'Data Kandidat Berhasil Ditambahkan!', $candidate);
     }
 
     /**
@@ -81,7 +81,7 @@ class CandidateController extends Controller
         $candidate = Candidate::find($id);
 
         //return single post as a resource
-        return new CandidateResource(true, 'Detail Data Kandidat!', $candidate);
+        return new ResponseResource(true, 'Detail Data Kandidat!', $candidate);
     }
 
     /**
@@ -134,7 +134,7 @@ class CandidateController extends Controller
         }
 
         //return response
-        return new CandidateResource(true, 'Data Kandidat Berhasil Diubah!', $candidate);
+        return new ResponseResource(true, 'Data Kandidat Berhasil Diubah!', $candidate);
     }
 
     /**
@@ -156,6 +156,6 @@ class CandidateController extends Controller
         $candidate->delete();
 
         //return response
-        return new CandidateResource(true, 'Data Kandidat Berhasil Dihapus!', null);
+        return new ResponseResource(true, 'Data Kandidat Berhasil Dihapus!', null);
     }
 }
