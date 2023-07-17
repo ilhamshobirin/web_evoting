@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('age')->default('0');
             $table->string('address')->default('');
             $table->integer('user_level')->default('0');
+            $table->boolean('isvoted')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

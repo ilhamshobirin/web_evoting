@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 //import model
 use App\Models\Voting;
+use App\Models\Candidate;
+use App\Models\User;
 
 //import Resources
 use App\Http\Resources\ResponseResource;
@@ -53,15 +55,34 @@ class VotingController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //create post
-        $voting = Voting::create([
-            'vote_date'     => $request->vote_date,
-            'voter'     => $request->voter,
-            'vote_to'   => $request->vote_to,
-        ]);
+        $user = User::find($request->voter);
 
-        //return response
-        return new ResponseResource(true, 'Voting Berhasil', $voting);
+        if($user->isvoted){
+            return new ResponseResource(true, 'Anda sudah melakukan voting', []);
+        }else{
+            //create voting
+            $voting = Voting::create([
+                'vote_date'     => $request->vote_date,
+                'voter'     => $request->voter,
+                'vote_to'   => $request->vote_to,
+            ]);
+    
+            //find user by ID
+            $user->update([
+                'isvoted' => true,
+            ]);
+    
+            //find candidate by ID
+            $candidate = Candidate::find($request->vote_to);
+            $candidate->update([
+                'vote_count' => $candidate->vote_count+1,
+            ]);
+
+            //return response
+            return new ResponseResource(true, 'Voting Berhasil', $voting);
+        }
+
+
     }
 
     public function clear()
@@ -69,7 +90,7 @@ class VotingController extends Controller
         Voting::truncate(); 
 
         //return response
-        return new ResponseResource(true, 'Berhasil menghapus semua data voting', null);
+        return new ResponseResource(true, 'Berhasil menghapus semua data voting', []);
     }
 
     /**
@@ -78,7 +99,7 @@ class VotingController extends Controller
      * @param  mixed $post
      * @return void
      */
-    public function show($id) { return new ResponseResource(true, 'Endpoint ini tidak tersedia', null);}
+    public function show($id) { return new ResponseResource(true, 'Endpoint ini tidak tersedia', []);}
 
     /**
      * update
@@ -87,7 +108,7 @@ class VotingController extends Controller
      * @param  mixed $post
      * @return void
      */
-    public function update(Request $request, $id) { return new ResponseResource(true, 'Endpoint ini tidak tersedia', null);}
+    public function update(Request $request, $id) { return new ResponseResource(true, 'Endpoint ini tidak tersedia', []);}
 
     /**
      * destroy
@@ -95,6 +116,6 @@ class VotingController extends Controller
      * @param  mixed $post
      * @return void
      */
-    public function destroy($id){return new ResponseResource(true, 'Endpoint ini tidak tersedia', null);}
+    public function destroy($id){return new ResponseResource(true, 'Endpoint ini tidak tersedia', []);}
 
 }

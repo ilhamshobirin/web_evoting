@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image');
             $table->text('detail');
+            $table->integer('vote_count')->default('0');
             $table->timestamps();
         });
     }

@@ -58,7 +58,7 @@ class CandidateController extends Controller
         $image = $request->file('image');
         $image->storeAs('public', $image->hashName());
 
-        //create post
+        //create candidate
         $candidate = Candidate::create([
             'name'     => $request->name,
             'image'     => $image->hashName(),
@@ -77,10 +77,10 @@ class CandidateController extends Controller
      */
     public function show($id)
     {
-        //find post by ID
+        //find candidate by ID
         $candidate = Candidate::find($id);
 
-        //return single post as a resource
+        //return single candidate as a resource
         return new ResponseResource(true, 'Detail Data Kandidat!', $candidate);
     }
 
@@ -104,7 +104,7 @@ class CandidateController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //find post by ID
+        //find candidate by ID
         $candidate = Candidate::find($id);
 
         //check if image is not empty
@@ -117,7 +117,7 @@ class CandidateController extends Controller
             //delete old image
             Storage::delete('public'.basename($candidate->image));
 
-            //update post with new image
+            //update candidate with new image
             $candidate->update([
                 'name'     => $request->name,
                 'image'     => $image->hashName(),
@@ -126,7 +126,7 @@ class CandidateController extends Controller
 
         } else {
 
-            //update post without image
+            //update candidate without image
             $candidate->update([
                 'name'     => $request->name,
                 'detail'   => $request->detail,
@@ -146,16 +146,16 @@ class CandidateController extends Controller
     public function destroy($id)
     {
 
-        //find post by ID
+        //find candidate by ID
         $candidate = Candidate::find($id);
 
         //delete image
         Storage::delete('public'.basename($candidate->image));
 
-        //delete post
+        //delete candidate
         $candidate->delete();
 
         //return response
-        return new ResponseResource(true, 'Data Kandidat Berhasil Dihapus!', null);
+        return new ResponseResource(true, 'Data Kandidat Berhasil Dihapus!', []);
     }
 }

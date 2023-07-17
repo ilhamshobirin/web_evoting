@@ -19,6 +19,7 @@ class Candidate extends Model
         'name',
         'image',
         'detail',
+        'vote_count'
     ];
 
     /**
