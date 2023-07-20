@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 //import model
 use App\Models\Voting;
@@ -91,6 +92,21 @@ class VotingController extends Controller
 
         //return response
         return new ResponseResource(true, 'Berhasil menghapus semua data voting', []);
+    }
+
+    public function quick_count()
+    {
+        $voter_only = DB::table('users')->whereRaw('user_level < 10')->count(); 
+        $all_candidate = Candidate::all()->count();
+        $total_done_vote = DB::table('users')->whereRaw('user_level < 10 && isvoted = 1')->count(); 
+
+        $data['voter_only'] = $voter_only ?? 0;
+        $data['all_candidate'] = $all_candidate ?? 0;
+        $data['total_done_vote'] = $total_done_vote ?? 0;
+        $data['total_not_vote'] = $voter_only - $total_done_vote ?? 0;
+
+        //return response
+        return new ResponseResource(true, 'Berhasil Mendapatkan data Quick Count', $data);
     }
 
     /**
