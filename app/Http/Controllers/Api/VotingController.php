@@ -94,7 +94,7 @@ class VotingController extends Controller
         return new ResponseResource(true, 'Berhasil menghapus semua data voting', []);
     }
 
-    public function quick_count()
+    public function rekap()
     {
         $voter_only = DB::table('users')->whereRaw('user_level < 10')->count(); 
         $all_candidate = Candidate::all()->count();
@@ -106,7 +106,7 @@ class VotingController extends Controller
         $data['total_not_vote'] = $voter_only - $total_done_vote ?? 0;
 
         //return response
-        return new ResponseResource(true, 'Berhasil Mendapatkan data Quick Count', $data);
+        return new ResponseResource(true, 'Berhasil Mendapatkan data Rekap', $data);
     }
 
     /**
