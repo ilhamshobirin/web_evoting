@@ -23,6 +23,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //candidates
     Route::apiResource('candidates', App\Http\Controllers\Api\CandidateController::class);
 
+    //Committee
+    Route::get('committees', [App\Http\Controllers\Api\CommitteeController::class, 'all_panitia']);
+    Route::post('committees', [App\Http\Controllers\Api\CommitteeController::class, 'add_panitia']);
+
     //votings
     Route::apiResource('votings', App\Http\Controllers\Api\VotingController::class);
     Route::get('rekap', [App\Http\Controllers\Api\VotingController::class, 'rekap']);

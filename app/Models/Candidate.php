@@ -29,13 +29,6 @@ class Candidate extends Model
      */
     protected function image(): Attribute
     {
-        // if($image == ''){
-        //     return '';
-        // }else{
-        //     return Attribute::make(
-        //         get: fn ($image) => asset('/storage/candidate/' . $image),
-        //     );
-        // }
         return Attribute::make(
             get: fn ($image) => asset('/storage/' . $image),
         );
