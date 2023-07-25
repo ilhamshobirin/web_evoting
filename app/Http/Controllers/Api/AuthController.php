@@ -61,6 +61,7 @@ class AuthController extends Controller
             $success['age'] = $auth->age;
             $success['address'] = $auth->address;
             $success['user_level'] = $auth->user_level;
+            $success['isvoted'] = $auth->isvoted;
 
             return response()->json([
                 'success' => true,
