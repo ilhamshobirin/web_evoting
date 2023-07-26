@@ -96,9 +96,9 @@ class VotingController extends Controller
 
     public function rekap()
     {
-        $voter_only = DB::table('users')->whereRaw('user_level < 10')->count(); 
+        $voter_only = DB::table('users')->count(); 
         $all_candidate = Candidate::all()->count();
-        $total_done_vote = DB::table('users')->whereRaw('user_level < 10 && isvoted = 1')->count(); 
+        $total_done_vote = DB::table('users')->whereRaw('isvoted = 1')->count(); 
 
         $data['voter_only'] = $voter_only ?? 0;
         $data['all_candidate'] = $all_candidate ?? 0;
@@ -107,6 +107,46 @@ class VotingController extends Controller
 
         //return response
         return new ResponseResource(true, 'Berhasil Mendapatkan data Rekap', $data);
+    }
+
+    public function all_voter(){
+        $user_only = DB::table('users')->whereRaw('user_level = 0')->get(); 
+
+        return new ResponseResource(true, 'Berhasil Mendapatkan semua data Pemilih', $user_only);
+    }
+
+    public function add_voter(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'user_name' => 'required',
+            'password' => 'required',
+            'ktp' => 'required',
+            'age' => 'required',
+            'address' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ada kesalahan',
+                'data' => $validator->errors()
+            ]);
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $input['user_level'] = 0;
+        $user = User::create($input);
+
+        $success['name'] = $user->name;
+        $success['user_name'] = $user->user_name;
+        $success['ktp'] = $user->ktp;
+        $success['age'] = $user->age;
+        $success['address'] = $user->address ?? '';
+        $success['user_level'] = $user->user_level ?? 0;
+
+        return new ResponseResource(true, 'Berhasil menambahkan data pemilih', $success);
+
     }
 
     /**

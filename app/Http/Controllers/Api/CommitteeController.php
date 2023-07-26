@@ -43,7 +43,6 @@ class CommitteeController extends Controller
         $input['user_level'] = 2;
         $user = User::create($input);
 
-        $success['token'] = $user->createToken('auth_token')->plainTextToken;
         $success['name'] = $user->name;
         $success['user_name'] = $user->user_name;
         $success['ktp'] = $user->ktp;
@@ -51,10 +50,6 @@ class CommitteeController extends Controller
         $success['address'] = $user->address ?? '';
         $success['user_level'] = $user->user_level ?? 0;
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menambahkan data panitia',
-            'data' => $success
-        ]);
+        return new ResponseResource(true, 'Berhasil menambahkan data panitia', $success);
     }
 }

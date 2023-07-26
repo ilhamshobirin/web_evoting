@@ -27,7 +27,6 @@ class CandidateController extends Controller
     public function index()
     {
         //get all candidates
-        // $candidates = Candidate::all();
         $candidates = Candidate::all();
 
         //return collection of candidates as a resource
