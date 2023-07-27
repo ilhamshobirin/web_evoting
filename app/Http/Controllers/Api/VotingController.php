@@ -88,7 +88,10 @@ class VotingController extends Controller
 
     public function clear()
     {
+
         Voting::truncate(); 
+        DB::table('candidates')->whereRaw('vote_count > 0')->update(['vote_count' => 0]); 
+        DB::table('users')->whereRaw('isvoted = 1')->update(['isvoted' => 0]); 
 
         //return response
         return new ResponseResource(true, 'Berhasil menghapus semua data voting', []);
